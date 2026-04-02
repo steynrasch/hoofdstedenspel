@@ -1,0 +1,2 @@
+# hoofdstedenspel
+Het hoofdstedenspel
