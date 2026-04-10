@@ -1,50 +1,404 @@
-
 <style>
+@import url('https://fonts.googleapis.com/css2?family=Playfair+Display:wght@400;500;600;700&family=Lato:wght@300;400;500;700&display=swap');
+
 * { box-sizing: border-box; margin: 0; padding: 0; }
-#app { padding: 1.5rem 1rem; max-width: 600px; margin: 0 auto; font-family: var(--font-sans); }
-#progress-bar-wrap { height: 6px; background: var(--color-border-tertiary); border-radius: 99px; margin-bottom: 1rem; overflow: hidden; }
-#progress-bar { height: 100%; background: #1D9E75; border-radius: 99px; transition: width 0.3s; }
-#score-row { display: flex; justify-content: space-between; font-size: 13px; color: var(--color-text-secondary); margin-bottom: 1rem; }
-#country-img { width: 100%; height: 200px; object-fit: cover; border-radius: var(--border-radius-lg); background: var(--color-background-secondary); display: block; margin-bottom: 1rem; }
-#question-card { background: var(--color-background-primary); border: 0.5px solid var(--color-border-tertiary); border-radius: var(--border-radius-lg); padding: 1.25rem 1.5rem; text-align: center; margin-bottom: 1rem; }
-#country-label { font-size: 13px; color: var(--color-text-secondary); margin-bottom: 0.25rem; }
-#country-name { font-size: 26px; font-weight: 500; color: var(--color-text-primary); }
-#input-row { display: flex; gap: 8px; margin-bottom: 1rem; }
-#answer-input { flex: 1; font-size: 16px; padding: 0 12px; height: 44px; border-radius: var(--border-radius-md); border: 0.5px solid var(--color-border-secondary); background: var(--color-background-primary); color: var(--color-text-primary); outline: none; }
-#answer-input:focus { box-shadow: 0 0 0 2px #1D9E75; border-color: #1D9E75; }
-#submit-btn { height: 44px; padding: 0 20px; border-radius: var(--border-radius-md); border: 0.5px solid var(--color-border-secondary); background: var(--color-background-primary); color: var(--color-text-primary); font-size: 15px; cursor: pointer; font-family: var(--font-sans); }
-#submit-btn:hover { background: var(--color-background-secondary); }
-#feedback { min-height: 28px; text-align: center; font-size: 15px; font-weight: 500; margin-bottom: 0.5rem; }
-.feedback-correct { color: #0F6E56; }
-.feedback-wrong { color: #993C1D; }
-#skip-btn { background: none; border: none; color: var(--color-text-secondary); font-size: 13px; cursor: pointer; font-family: var(--font-sans); display: block; margin: 0 auto; }
-#skip-btn:hover { color: var(--color-text-primary); }
-#end-screen { display: none; text-align: center; padding: 2rem 1rem; }
-#end-score { font-size: 48px; font-weight: 500; color: var(--color-text-primary); }
-#end-label { font-size: 15px; color: var(--color-text-secondary); margin-bottom: 1.5rem; }
-#missed-list { text-align: left; background: var(--color-background-secondary); border-radius: var(--border-radius-lg); padding: 1rem 1.25rem; margin-bottom: 1.5rem; max-height: 260px; overflow-y: auto; }
-#missed-list h3 { font-size: 14px; color: var(--color-text-secondary); font-weight: 500; margin-bottom: 0.75rem; }
-.missed-item { font-size: 14px; color: var(--color-text-primary); padding: 4px 0; border-bottom: 0.5px solid var(--color-border-tertiary); display: flex; justify-content: space-between; }
+
+:root {
+  --dr-navy: #1a2332;
+  --dr-navy-light: #243044;
+  --dr-gold: #c9a84c;
+  --dr-gold-light: #d4b96a;
+  --dr-gold-dark: #b08f3a;
+  --dr-cream: #f8f5ef;
+  --dr-white: #ffffff;
+  --dr-gray: #6b7280;
+  --dr-gray-light: #e5e7eb;
+  --dr-red: #a63d2f;
+  --dr-green: #2d7a5f;
+  --dr-green-light: #e8f5f0;
+  --dr-red-light: #fdf0ed;
+}
+
+body { margin: 0; padding: 0; background: var(--dr-cream); }
+
+#app {
+  padding: 0;
+  max-width: 520px;
+  margin: 0 auto;
+  font-family: 'Lato', sans-serif;
+  min-height: 100vh;
+  background: var(--dr-white);
+}
+
+/* ─── HEADER ─── */
+.dr-header {
+  background: var(--dr-navy);
+  padding: 1.25rem 1.5rem;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  gap: 0.75rem;
+}
+.dr-logo-text {
+  font-family: 'Playfair Display', serif;
+  color: var(--dr-gold);
+  font-size: 17px;
+  font-weight: 500;
+  letter-spacing: 1.5px;
+}
+.dr-logo-pipe {
+  color: var(--dr-gold);
+  font-weight: 300;
+  margin: 0 2px;
+}
+.dr-logo-sub {
+  color: rgba(255,255,255,0.55);
+  font-family: 'Lato', sans-serif;
+  font-size: 10px;
+  letter-spacing: 3px;
+  text-transform: uppercase;
+  display: block;
+  text-align: center;
+  margin-top: 2px;
+}
+
+/* ─── PROGRESS ─── */
+#progress-bar-wrap {
+  height: 4px;
+  background: var(--dr-gray-light);
+  overflow: hidden;
+}
+#progress-bar {
+  height: 100%;
+  background: linear-gradient(90deg, var(--dr-gold-dark), var(--dr-gold));
+  border-radius: 0 2px 2px 0;
+  transition: width 0.4s ease;
+}
+#score-row {
+  display: flex;
+  justify-content: space-between;
+  font-size: 12px;
+  color: var(--dr-gray);
+  padding: 0.75rem 1.5rem;
+  font-weight: 500;
+  letter-spacing: 0.5px;
+  text-transform: uppercase;
+  border-bottom: 1px solid var(--dr-gray-light);
+}
+
+/* ─── COUNTRY VISUAL ─── */
+#country-img-wrap {
+  width: 100%;
+  height: 200px;
+  overflow: hidden;
+  position: relative;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  background: var(--dr-navy);
+  transition: background 0.4s;
+}
+#country-flag-emoji {
+  font-size: 100px;
+  line-height: 1;
+  filter: drop-shadow(0 4px 12px rgba(0,0,0,0.3));
+  transition: transform 0.3s;
+}
+#country-flag-emoji:hover { transform: scale(1.1); }
+#country-region-label {
+  position: absolute;
+  top: 12px;
+  left: 16px;
+  font-size: 10px;
+  letter-spacing: 2px;
+  text-transform: uppercase;
+  color: rgba(255,255,255,0.5);
+  font-weight: 600;
+}
+#country-flag-img {
+  position: absolute;
+  bottom: 12px;
+  right: 12px;
+  height: 28px;
+  border-radius: 3px;
+  box-shadow: 0 2px 8px rgba(0,0,0,0.3);
+  border: 1px solid rgba(255,255,255,0.2);
+}
+
+/* ─── QUESTION CARD ─── */
+#question-card {
+  padding: 1.5rem;
+  text-align: center;
+  border-bottom: 1px solid var(--dr-gray-light);
+}
+#country-label {
+  font-size: 11px;
+  color: var(--dr-gray);
+  margin-bottom: 0.35rem;
+  letter-spacing: 2px;
+  text-transform: uppercase;
+  font-weight: 500;
+}
+#country-name {
+  font-family: 'Playfair Display', serif;
+  font-size: 28px;
+  font-weight: 600;
+  color: var(--dr-navy);
+  line-height: 1.2;
+}
+#retry-badge {
+  display: none;
+  margin-top: 0.5rem;
+  font-size: 11px;
+  color: var(--dr-gold-dark);
+  font-weight: 500;
+  letter-spacing: 0.5px;
+}
+
+/* ─── INPUT ─── */
+#input-area { padding: 1.25rem 1.5rem; }
+#input-row { display: flex; gap: 8px; margin-bottom: 0.75rem; }
+#answer-input {
+  flex: 1;
+  font-size: 16px;
+  padding: 0 14px;
+  height: 48px;
+  border-radius: 6px;
+  border: 1.5px solid var(--dr-gray-light);
+  background: var(--dr-white);
+  color: var(--dr-navy);
+  outline: none;
+  font-family: 'Lato', sans-serif;
+  transition: border-color 0.2s, box-shadow 0.2s;
+}
+#answer-input:focus {
+  border-color: var(--dr-gold);
+  box-shadow: 0 0 0 3px rgba(201,168,76,0.15);
+}
+#submit-btn {
+  height: 48px;
+  padding: 0 24px;
+  border-radius: 6px;
+  border: none;
+  background: var(--dr-navy);
+  color: var(--dr-gold);
+  font-size: 14px;
+  font-weight: 600;
+  cursor: pointer;
+  font-family: 'Lato', sans-serif;
+  letter-spacing: 1px;
+  text-transform: uppercase;
+  transition: background 0.2s;
+}
+#submit-btn:hover { background: var(--dr-navy-light); }
+
+/* ─── FEEDBACK ─── */
+#feedback {
+  min-height: 44px;
+  text-align: center;
+  font-size: 14px;
+  font-weight: 600;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  border-radius: 6px;
+  margin-bottom: 0.5rem;
+  padding: 0 12px;
+  transition: all 0.2s;
+}
+.feedback-correct {
+  color: var(--dr-green);
+  background: var(--dr-green-light);
+}
+.feedback-wrong {
+  color: var(--dr-red);
+  background: var(--dr-red-light);
+}
+
+#skip-btn {
+  background: none;
+  border: none;
+  color: var(--dr-gray);
+  font-size: 12px;
+  cursor: pointer;
+  font-family: 'Lato', sans-serif;
+  display: block;
+  margin: 0 auto;
+  padding: 6px 12px;
+  letter-spacing: 0.5px;
+  transition: color 0.2s;
+}
+#skip-btn:hover { color: var(--dr-navy); }
+
+/* ─── START SCREEN ─── */
+#start-screen {
+  text-align: center;
+  padding: 3rem 1.5rem 2rem;
+}
+.start-icon {
+  width: 72px;
+  height: 72px;
+  background: var(--dr-navy);
+  border-radius: 50%;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  margin: 0 auto 1.25rem;
+  font-size: 32px;
+}
+#start-screen h2 {
+  font-family: 'Playfair Display', serif;
+  font-size: 24px;
+  font-weight: 600;
+  color: var(--dr-navy);
+  margin-bottom: 0.5rem;
+}
+#start-screen p {
+  font-size: 14px;
+  color: var(--dr-gray);
+  margin-bottom: 2rem;
+  line-height: 1.6;
+}
+.filter-row {
+  display: flex;
+  gap: 6px;
+  justify-content: center;
+  flex-wrap: wrap;
+  margin-bottom: 2rem;
+}
+.filter-btn {
+  height: 34px;
+  padding: 0 16px;
+  border-radius: 99px;
+  border: 1.5px solid var(--dr-gray-light);
+  background: var(--dr-white);
+  color: var(--dr-gray);
+  font-size: 12px;
+  cursor: pointer;
+  font-family: 'Lato', sans-serif;
+  font-weight: 500;
+  transition: all 0.2s;
+  letter-spacing: 0.3px;
+}
+.filter-btn.active {
+  background: var(--dr-navy);
+  color: var(--dr-gold);
+  border-color: var(--dr-navy);
+}
+.filter-btn:hover:not(.active) {
+  border-color: var(--dr-navy);
+  color: var(--dr-navy);
+}
+#start-btn {
+  height: 50px;
+  padding: 0 40px;
+  border-radius: 6px;
+  border: none;
+  background: var(--dr-gold);
+  color: var(--dr-navy);
+  font-size: 15px;
+  font-weight: 700;
+  cursor: pointer;
+  font-family: 'Lato', sans-serif;
+  letter-spacing: 1.5px;
+  text-transform: uppercase;
+  transition: background 0.2s;
+}
+#start-btn:hover { background: var(--dr-gold-light); }
+
+/* ─── END SCREEN ─── */
+#end-screen {
+  display: none;
+  text-align: center;
+  padding: 2.5rem 1.5rem 2rem;
+}
+#end-score {
+  font-family: 'Playfair Display', serif;
+  font-size: 52px;
+  font-weight: 700;
+  color: var(--dr-navy);
+}
+#end-label {
+  font-size: 15px;
+  color: var(--dr-gray);
+  margin-bottom: 1.5rem;
+  font-weight: 400;
+}
+#missed-list {
+  text-align: left;
+  background: var(--dr-cream);
+  border-radius: 8px;
+  padding: 1rem 1.25rem;
+  margin-bottom: 1.5rem;
+  max-height: 280px;
+  overflow-y: auto;
+}
+#missed-list h3 {
+  font-size: 11px;
+  color: var(--dr-gray);
+  font-weight: 600;
+  margin-bottom: 0.75rem;
+  letter-spacing: 2px;
+  text-transform: uppercase;
+}
+.missed-item {
+  font-size: 13px;
+  color: var(--dr-navy);
+  padding: 6px 0;
+  border-bottom: 1px solid var(--dr-gray-light);
+  display: flex;
+  justify-content: space-between;
+  font-weight: 400;
+}
 .missed-item:last-child { border-bottom: none; }
-.missed-country { color: var(--color-text-secondary); }
-#restart-btn { height: 44px; padding: 0 28px; border-radius: var(--border-radius-md); border: 0.5px solid var(--color-border-secondary); background: var(--color-background-primary); color: var(--color-text-primary); font-size: 15px; cursor: pointer; font-family: var(--font-sans); }
-#restart-btn:hover { background: var(--color-background-secondary); }
-#start-screen { text-align: center; padding: 2rem 1rem; }
-#start-screen h2 { font-size: 22px; font-weight: 500; margin-bottom: 0.5rem; }
-#start-screen p { font-size: 15px; color: var(--color-text-secondary); margin-bottom: 1.5rem; }
-#start-btn { height: 44px; padding: 0 28px; border-radius: var(--border-radius-md); border: 0.5px solid var(--color-border-secondary); background: var(--color-background-primary); color: var(--color-text-primary); font-size: 15px; cursor: pointer; font-family: var(--font-sans); }
-#start-btn:hover { background: var(--color-background-secondary); }
-.filter-row { display: flex; gap: 8px; justify-content: center; flex-wrap: wrap; margin-bottom: 1.5rem; }
-.filter-btn { height: 32px; padding: 0 14px; border-radius: 99px; border: 0.5px solid var(--color-border-secondary); background: var(--color-background-primary); color: var(--color-text-secondary); font-size: 13px; cursor: pointer; font-family: var(--font-sans); }
-.filter-btn.active { background: #1D9E75; color: white; border-color: #1D9E75; }
-#img-credit { font-size: 11px; color: var(--color-text-secondary); text-align: right; margin-top: -0.75rem; margin-bottom: 0.75rem; }
+.missed-country { color: var(--dr-gray); }
+.missed-capital { font-weight: 600; }
+#restart-btn {
+  height: 50px;
+  padding: 0 36px;
+  border-radius: 6px;
+  border: none;
+  background: var(--dr-gold);
+  color: var(--dr-navy);
+  font-size: 15px;
+  font-weight: 700;
+  cursor: pointer;
+  font-family: 'Lato', sans-serif;
+  letter-spacing: 1.5px;
+  text-transform: uppercase;
+  transition: background 0.2s;
+}
+#restart-btn:hover { background: var(--dr-gold-light); }
+
+#game-screen { display: none; }
+
+/* ─── REVIEW BANNER ─── */
+.review-banner {
+  background: linear-gradient(135deg, var(--dr-gold), var(--dr-gold-light));
+  color: var(--dr-navy);
+  text-align: center;
+  padding: 0.75rem 1rem;
+  font-size: 13px;
+  font-weight: 700;
+  letter-spacing: 1px;
+  text-transform: uppercase;
+}
 </style>
 
 <div id="app">
+  <!-- HEADER -->
+  <div class="dr-header">
+    <div>
+      <div class="dr-logo-text">HOOFDSTEDENSPEL</div>
+      <div class="dr-logo-sub">by Steyn Rasch</div>
+    </div>
+  </div>
+
+  <!-- START SCREEN -->
   <div id="start-screen">
-    <div style="font-size:48px;margin-bottom:0.75rem;">🌍</div>
+    <div class="start-icon">🌍</div>
     <h2>Wereldhoofdsteden Quiz</h2>
-    <p>Hoeveel hoofdsteden ken jij? Typ de hoofdstad van elk land dat voorbij komt.</p>
+    <p>Hoeveel hoofdsteden ken jij? Typ de hoofdstad van elk land dat voorbijkomt. Foute antwoorden komen later terug!</p>
     <div class="filter-row">
       <button class="filter-btn active" data-region="all">Alle landen</button>
       <button class="filter-btn" data-region="Europe">Europa</button>
@@ -53,29 +407,38 @@
       <button class="filter-btn" data-region="Africa">Afrika</button>
       <button class="filter-btn" data-region="Oceania">Oceanië</button>
     </div>
-    <button id="start-btn">Start het spel</button>
+    <button id="start-btn">Start de quiz</button>
   </div>
 
-  <div id="game-screen" style="display:none;">
+  <!-- GAME SCREEN -->
+  <div id="game-screen">
+    <div id="review-banner" class="review-banner" style="display:none;">Herhaalronde — foute antwoorden</div>
     <div id="progress-bar-wrap"><div id="progress-bar" style="width:0%"></div></div>
     <div id="score-row">
       <span id="score-text">Score: 0</span>
       <span id="progress-text">0 / 0</span>
     </div>
-    <img id="country-img" src="" alt="Landsfoto" />
-    <div id="img-credit"></div>
+    <div id="country-img-wrap">
+      <span id="country-region-label"></span>
+      <span id="country-flag-emoji"></span>
+      <img id="country-flag-img" src="" alt="Vlag" />
+    </div>
     <div id="question-card">
       <div id="country-label">Wat is de hoofdstad van</div>
       <div id="country-name"></div>
+      <div id="retry-badge"></div>
     </div>
-    <div id="input-row">
-      <input id="answer-input" type="text" placeholder="Typ de hoofdstad..." autocomplete="off" autocorrect="off" spellcheck="false" />
-      <button id="submit-btn">OK</button>
+    <div id="input-area">
+      <div id="input-row">
+        <input id="answer-input" type="text" placeholder="Typ de hoofdstad..." autocomplete="off" autocorrect="off" spellcheck="false" />
+        <button id="submit-btn">OK</button>
+      </div>
+      <div id="feedback"></div>
+      <button id="skip-btn">Weet ik niet — sla over</button>
     </div>
-    <div id="feedback"></div>
-    <button id="skip-btn">Weet ik niet — sla over</button>
   </div>
 
+  <!-- END SCREEN -->
   <div id="end-screen">
     <div id="end-score"></div>
     <div id="end-label"></div>
@@ -86,292 +449,402 @@
 
 <script>
 const ALL_COUNTRIES = [
-  {c:"Afghanistan",cap:"Kabul",r:"Asia"},
-  {c:"Albanië",cap:"Tirana",r:"Europe"},
-  {c:"Algerije",cap:"Algiers",r:"Africa"},
-  {c:"Andorra",cap:"Andorra la Vella",r:"Europe"},
-  {c:"Angola",cap:"Luanda",r:"Africa"},
-  {c:"Antigua en Barbuda",cap:"Saint John's",r:"Americas"},
-  {c:"Argentinië",cap:"Buenos Aires",r:"Americas"},
-  {c:"Armenië",cap:"Jerevan",r:"Asia"},
-  {c:"Australië",cap:"Canberra",r:"Oceania"},
-  {c:"Azerbeidzjan",cap:"Bakoe",r:"Asia"},
-  {c:"Bahama's",cap:"Nassau",r:"Americas"},
-  {c:"Bahrein",cap:"Manama",r:"Asia"},
-  {c:"Bangladesh",cap:"Dhaka",r:"Asia"},
-  {c:"Barbados",cap:"Bridgetown",r:"Americas"},
-  {c:"België",cap:"Brussel",r:"Europe"},
-  {c:"Belize",cap:"Belmopan",r:"Americas"},
-  {c:"Benin",cap:"Porto-Novo",r:"Africa"},
-  {c:"Bhutan",cap:"Thimphu",r:"Asia"},
-  {c:"Bolivia",cap:"Sucre",r:"Americas"},
-  {c:"Bosnië-Herzegovina",cap:"Sarajevo",r:"Europe"},
-  {c:"Botswana",cap:"Gaborone",r:"Africa"},
-  {c:"Brazilië",cap:"Brasilia",r:"Americas"},
-  {c:"Brunei",cap:"Bandar Seri Begawan",r:"Asia"},
-  {c:"Bulgarije",cap:"Sofia",r:"Europe"},
-  {c:"Burkina Faso",cap:"Ouagadougou",r:"Africa"},
-  {c:"Burundi",cap:"Gitega",r:"Africa"},
-  {c:"Cambodja",cap:"Phnom Penh",r:"Asia"},
-  {c:"Canada",cap:"Ottawa",r:"Americas"},
-  {c:"Centraal-Afrikaanse Republiek",cap:"Bangui",r:"Africa"},
-  {c:"Chili",cap:"Santiago",r:"Americas"},
-  {c:"China",cap:"Peking",r:"Asia"},
-  {c:"Colombia",cap:"Bogota",r:"Americas"},
-  {c:"Comoren",cap:"Moroni",r:"Africa"},
-  {c:"Congo",cap:"Brazzaville",r:"Africa"},
-  {c:"Costa Rica",cap:"San José",r:"Americas"},
-  {c:"Cuba",cap:"Havana",r:"Americas"},
-  {c:"Cyprus",cap:"Nicosia",r:"Europe"},
-  {c:"Denemarken",cap:"Kopenhagen",r:"Europe"},
-  {c:"Djibouti",cap:"Djibouti",r:"Africa"},
-  {c:"Dominica",cap:"Roseau",r:"Americas"},
-  {c:"Dominicaanse Republiek",cap:"Santo Domingo",r:"Americas"},
-  {c:"DR Congo",cap:"Kinshasa",r:"Africa"},
-  {c:"Duitsland",cap:"Berlijn",r:"Europe"},
-  {c:"Ecuador",cap:"Quito",r:"Americas"},
-  {c:"Egypte",cap:"Caïro",r:"Africa"},
-  {c:"El Salvador",cap:"San Salvador",r:"Americas"},
-  {c:"Equatoriaal-Guinea",cap:"Malabo",r:"Africa"},
-  {c:"Eritrea",cap:"Asmara",r:"Africa"},
-  {c:"Estland",cap:"Tallinn",r:"Europe"},
-  {c:"Eswatini",cap:"Mbabane",r:"Africa"},
-  {c:"Ethiopië",cap:"Addis Abeba",r:"Africa"},
-  {c:"Fiji",cap:"Suva",r:"Oceania"},
-  {c:"Filipijnen",cap:"Manilla",r:"Asia"},
-  {c:"Finland",cap:"Helsinki",r:"Europe"},
-  {c:"Frankrijk",cap:"Parijs",r:"Europe"},
-  {c:"Gabon",cap:"Libreville",r:"Africa"},
-  {c:"Gambia",cap:"Banjul",r:"Africa"},
-  {c:"Georgië",cap:"Tbilisi",r:"Asia"},
-  {c:"Ghana",cap:"Accra",r:"Africa"},
-  {c:"Grenada",cap:"Saint George's",r:"Americas"},
-  {c:"Guatemala",cap:"Guatemala-Stad",r:"Americas"},
-  {c:"Guinee",cap:"Conakry",r:"Africa"},
-  {c:"Guinee-Bissau",cap:"Bissau",r:"Africa"},
-  {c:"Guyana",cap:"Georgetown",r:"Americas"},
-  {c:"Haïti",cap:"Port-au-Prince",r:"Americas"},
-  {c:"Honduras",cap:"Tegucigalpa",r:"Americas"},
-  {c:"Hongarije",cap:"Boedapest",r:"Europe"},
-  {c:"Ierland",cap:"Dublin",r:"Europe"},
-  {c:"IJsland",cap:"Reykjavik",r:"Europe"},
-  {c:"India",cap:"New Delhi",r:"Asia"},
-  {c:"Indonesië",cap:"Jakarta",r:"Asia"},
-  {c:"Irak",cap:"Bagdad",r:"Asia"},
-  {c:"Iran",cap:"Teheran",r:"Asia"},
-  {c:"Israël",cap:"Jeruzalem",r:"Asia"},
-  {c:"Italië",cap:"Rome",r:"Europe"},
-  {c:"Ivoorkust",cap:"Yamoussoukro",r:"Africa"},
-  {c:"Jamaica",cap:"Kingston",r:"Americas"},
-  {c:"Japan",cap:"Tokio",r:"Asia"},
-  {c:"Jemen",cap:"Sanaa",r:"Asia"},
-  {c:"Jordanië",cap:"Amman",r:"Asia"},
-  {c:"Kaapverdië",cap:"Praia",r:"Africa"},
-  {c:"Kameroen",cap:"Yaoundé",r:"Africa"},
-  {c:"Kazachstan",cap:"Astana",r:"Asia"},
-  {c:"Kenia",cap:"Nairobi",r:"Africa"},
-  {c:"Kiribati",cap:"Tarawa",r:"Oceania"},
-  {c:"Koeweit",cap:"Koeweit-Stad",r:"Asia"},
-  {c:"Kroatië",cap:"Zagreb",r:"Europe"},
-  {c:"Kyrgyzstan",cap:"Bisjkek",r:"Asia"},
-  {c:"Laos",cap:"Vientiane",r:"Asia"},
-  {c:"Lesotho",cap:"Maseru",r:"Africa"},
-  {c:"Letland",cap:"Riga",r:"Europe"},
-  {c:"Libanon",cap:"Beiroet",r:"Asia"},
-  {c:"Liberia",cap:"Monrovia",r:"Africa"},
-  {c:"Libië",cap:"Tripoli",r:"Africa"},
-  {c:"Liechtenstein",cap:"Vaduz",r:"Europe"},
-  {c:"Litouwen",cap:"Vilnius",r:"Europe"},
-  {c:"Luxemburg",cap:"Luxemburg",r:"Europe"},
-  {c:"Madagascar",cap:"Antananarivo",r:"Africa"},
-  {c:"Malawi",cap:"Lilongwe",r:"Africa"},
-  {c:"Maldiven",cap:"Malé",r:"Asia"},
-  {c:"Maleisië",cap:"Kuala Lumpur",r:"Asia"},
-  {c:"Mali",cap:"Bamako",r:"Africa"},
-  {c:"Malta",cap:"Valletta",r:"Europe"},
-  {c:"Marokko",cap:"Rabat",r:"Africa"},
-  {c:"Marshalleilanden",cap:"Majuro",r:"Oceania"},
-  {c:"Mauritanië",cap:"Nouakchott",r:"Africa"},
-  {c:"Mauritius",cap:"Port Louis",r:"Africa"},
-  {c:"Mexico",cap:"Mexico-Stad",r:"Americas"},
-  {c:"Micronesië",cap:"Palikir",r:"Oceania"},
-  {c:"Moldavië",cap:"Chisinau",r:"Europe"},
-  {c:"Monaco",cap:"Monaco",r:"Europe"},
-  {c:"Mongolië",cap:"Ulaanbaatar",r:"Asia"},
-  {c:"Montenegro",cap:"Podgorica",r:"Europe"},
-  {c:"Mozambique",cap:"Maputo",r:"Africa"},
-  {c:"Myanmar",cap:"Naypyidaw",r:"Asia"},
-  {c:"Namibië",cap:"Windhoek",r:"Africa"},
-  {c:"Nauru",cap:"Yaren",r:"Oceania"},
-  {c:"Nepal",cap:"Kathmandu",r:"Asia"},
-  {c:"Nederland",cap:"Amsterdam",r:"Europe"},
-  {c:"Nicaragua",cap:"Managua",r:"Americas"},
-  {c:"Niger",cap:"Niamey",r:"Africa"},
-  {c:"Nigeria",cap:"Abuja",r:"Africa"},
-  {c:"Noord-Korea",cap:"Pyongyang",r:"Asia"},
-  {c:"Noord-Macedonië",cap:"Skopje",r:"Europe"},
-  {c:"Noorwegen",cap:"Oslo",r:"Europe"},
-  {c:"Nieuw-Zeeland",cap:"Wellington",r:"Oceania"},
-  {c:"Oekraïne",cap:"Kiev",r:"Europe"},
-  {c:"Oezbekistan",cap:"Tasjkent",r:"Asia"},
-  {c:"Oman",cap:"Muscat",r:"Asia"},
-  {c:"Oost-Timor",cap:"Dili",r:"Asia"},
-  {c:"Oostenrijk",cap:"Wenen",r:"Europe"},
-  {c:"Pakistan",cap:"Islamabad",r:"Asia"},
-  {c:"Palau",cap:"Ngerulmud",r:"Oceania"},
-  {c:"Panama",cap:"Panama-Stad",r:"Americas"},
-  {c:"Papoea-Nieuw-Guinea",cap:"Port Moresby",r:"Oceania"},
-  {c:"Paraguay",cap:"Asunción",r:"Americas"},
-  {c:"Peru",cap:"Lima",r:"Americas"},
-  {c:"Polen",cap:"Warschau",r:"Europe"},
-  {c:"Portugal",cap:"Lissabon",r:"Europe"},
-  {c:"Qatar",cap:"Doha",r:"Asia"},
-  {c:"Roemenië",cap:"Boekarest",r:"Europe"},
-  {c:"Rusland",cap:"Moskou",r:"Europe"},
-  {c:"Rwanda",cap:"Kigali",r:"Africa"},
-  {c:"Saint Kitts en Nevis",cap:"Basseterre",r:"Americas"},
-  {c:"Saint Lucia",cap:"Castries",r:"Americas"},
-  {c:"Saint Vincent en de Grenadines",cap:"Kingstown",r:"Americas"},
-  {c:"Salomonseilanden",cap:"Honiara",r:"Oceania"},
-  {c:"Samoa",cap:"Apia",r:"Oceania"},
-  {c:"San Marino",cap:"San Marino",r:"Europe"},
-  {c:"Sao Tomé en Príncipe",cap:"São Tomé",r:"Africa"},
-  {c:"Saudi-Arabië",cap:"Riyad",r:"Asia"},
-  {c:"Senegal",cap:"Dakar",r:"Africa"},
-  {c:"Servië",cap:"Belgrado",r:"Europe"},
-  {c:"Seychellen",cap:"Victoria",r:"Africa"},
-  {c:"Sierra Leone",cap:"Freetown",r:"Africa"},
-  {c:"Singapore",cap:"Singapore",r:"Asia"},
-  {c:"Slovenië",cap:"Ljubljana",r:"Europe"},
-  {c:"Slowakije",cap:"Bratislava",r:"Europe"},
-  {c:"Somalië",cap:"Mogadishu",r:"Africa"},
-  {c:"Spanje",cap:"Madrid",r:"Europe"},
-  {c:"Sri Lanka",cap:"Sri Jayawardenepura Kotte",r:"Asia"},
-  {c:"Soedan",cap:"Khartoem",r:"Africa"},
-  {c:"Suriname",cap:"Paramaribo",r:"Americas"},
-  {c:"Syrië",cap:"Damascus",r:"Asia"},
-  {c:"Tadzjikistan",cap:"Doesjanbe",r:"Asia"},
-  {c:"Tanzania",cap:"Dodoma",r:"Africa"},
-  {c:"Thailand",cap:"Bangkok",r:"Asia"},
-  {c:"Togo",cap:"Lomé",r:"Africa"},
-  {c:"Tonga",cap:"Nuku'alofa",r:"Oceania"},
-  {c:"Trinidad en Tobago",cap:"Port of Spain",r:"Americas"},
-  {c:"Tsjaad",cap:"N'Djamena",r:"Africa"},
-  {c:"Tsjechië",cap:"Praag",r:"Europe"},
-  {c:"Tunesië",cap:"Tunis",r:"Africa"},
-  {c:"Turkije",cap:"Ankara",r:"Asia"},
-  {c:"Turkmenistan",cap:"Asjchabad",r:"Asia"},
-  {c:"Tuvalu",cap:"Funafuti",r:"Oceania"},
-  {c:"Uganda",cap:"Kampala",r:"Africa"},
-  {c:"Uruguay",cap:"Montevideo",r:"Americas"},
-  {c:"Vanuatu",cap:"Port Vila",r:"Oceania"},
-  {c:"Venezuela",cap:"Caracas",r:"Americas"},
-  {c:"Verenigd Koninkrijk",cap:"Londen",r:"Europe"},
-  {c:"Verenigde Arabische Emiraten",cap:"Abu Dhabi",r:"Asia"},
-  {c:"Verenigde Staten",cap:"Washington D.C.",r:"Americas"},
-  {c:"Vietnam",cap:"Hanoi",r:"Asia"},
-  {c:"Wit-Rusland",cap:"Minsk",r:"Europe"},
-  {c:"Zambia",cap:"Lusaka",r:"Africa"},
-  {c:"Zimbabwe",cap:"Harare",r:"Africa"},
-  {c:"Zuid-Afrika",cap:"Pretoria",r:"Africa"},
-  {c:"Zuid-Korea",cap:"Seoul",r:"Asia"},
-  {c:"Zuid-Soedan",cap:"Juba",r:"Africa"},
-  {c:"Zweden",cap:"Stockholm",r:"Europe"},
-  {c:"Zwitserland",cap:"Bern",r:"Europe"},
+  {c:"Afghanistan",cap:"Kabul",r:"Asia",cc:"af"},
+  {c:"Albanië",cap:"Tirana",r:"Europe",cc:"al"},
+  {c:"Algerije",cap:"Algiers",r:"Africa",cc:"dz"},
+  {c:"Andorra",cap:"Andorra la Vella",r:"Europe",cc:"ad"},
+  {c:"Angola",cap:"Luanda",r:"Africa",cc:"ao"},
+  {c:"Antigua en Barbuda",cap:"Saint John's",r:"Americas",cc:"ag"},
+  {c:"Argentinië",cap:"Buenos Aires",r:"Americas",cc:"ar"},
+  {c:"Armenië",cap:"Jerevan",r:"Asia",cc:"am"},
+  {c:"Australië",cap:"Canberra",r:"Oceania",cc:"au"},
+  {c:"Azerbeidzjan",cap:"Bakoe",r:"Asia",cc:"az"},
+  {c:"Bahama's",cap:"Nassau",r:"Americas",cc:"bs"},
+  {c:"Bahrein",cap:"Manama",r:"Asia",cc:"bh"},
+  {c:"Bangladesh",cap:"Dhaka",r:"Asia",cc:"bd"},
+  {c:"Barbados",cap:"Bridgetown",r:"Americas",cc:"bb"},
+  {c:"België",cap:"Brussel",r:"Europe",cc:"be"},
+  {c:"Belize",cap:"Belmopan",r:"Americas",cc:"bz"},
+  {c:"Benin",cap:"Porto-Novo",r:"Africa",cc:"bj"},
+  {c:"Bhutan",cap:"Thimphu",r:"Asia",cc:"bt"},
+  {c:"Bolivia",cap:"Sucre",r:"Americas",cc:"bo"},
+  {c:"Bosnië-Herzegovina",cap:"Sarajevo",r:"Europe",cc:"ba"},
+  {c:"Botswana",cap:"Gaborone",r:"Africa",cc:"bw"},
+  {c:"Brazilië",cap:"Brasilia",r:"Americas",cc:"br"},
+  {c:"Brunei",cap:"Bandar Seri Begawan",r:"Asia",cc:"bn"},
+  {c:"Bulgarije",cap:"Sofia",r:"Europe",cc:"bg"},
+  {c:"Burkina Faso",cap:"Ouagadougou",r:"Africa",cc:"bf"},
+  {c:"Burundi",cap:"Gitega",r:"Africa",cc:"bi"},
+  {c:"Cambodja",cap:"Phnom Penh",r:"Asia",cc:"kh"},
+  {c:"Canada",cap:"Ottawa",r:"Americas",cc:"ca"},
+  {c:"Centraal-Afrikaanse Republiek",cap:"Bangui",r:"Africa",cc:"cf"},
+  {c:"Chili",cap:"Santiago",r:"Americas",cc:"cl"},
+  {c:"China",cap:"Peking",r:"Asia",cc:"cn"},
+  {c:"Colombia",cap:"Bogota",r:"Americas",cc:"co"},
+  {c:"Comoren",cap:"Moroni",r:"Africa",cc:"km"},
+  {c:"Congo",cap:"Brazzaville",r:"Africa",cc:"cg"},
+  {c:"Costa Rica",cap:"San José",r:"Americas",cc:"cr"},
+  {c:"Cuba",cap:"Havana",r:"Americas",cc:"cu"},
+  {c:"Cyprus",cap:"Nicosia",r:"Europe",cc:"cy"},
+  {c:"Denemarken",cap:"Kopenhagen",r:"Europe",cc:"dk"},
+  {c:"Djibouti",cap:"Djibouti",r:"Africa",cc:"dj"},
+  {c:"Dominica",cap:"Roseau",r:"Americas",cc:"dm"},
+  {c:"Dominicaanse Republiek",cap:"Santo Domingo",r:"Americas",cc:"do"},
+  {c:"DR Congo",cap:"Kinshasa",r:"Africa",cc:"cd"},
+  {c:"Duitsland",cap:"Berlijn",r:"Europe",cc:"de"},
+  {c:"Ecuador",cap:"Quito",r:"Americas",cc:"ec"},
+  {c:"Egypte",cap:"Caïro",r:"Africa",cc:"eg"},
+  {c:"El Salvador",cap:"San Salvador",r:"Americas",cc:"sv"},
+  {c:"Equatoriaal-Guinea",cap:"Malabo",r:"Africa",cc:"gq"},
+  {c:"Eritrea",cap:"Asmara",r:"Africa",cc:"er"},
+  {c:"Estland",cap:"Tallinn",r:"Europe",cc:"ee"},
+  {c:"Eswatini",cap:"Mbabane",r:"Africa",cc:"sz"},
+  {c:"Ethiopië",cap:"Addis Abeba",r:"Africa",cc:"et"},
+  {c:"Fiji",cap:"Suva",r:"Oceania",cc:"fj"},
+  {c:"Filipijnen",cap:"Manilla",r:"Asia",cc:"ph"},
+  {c:"Finland",cap:"Helsinki",r:"Europe",cc:"fi"},
+  {c:"Frankrijk",cap:"Parijs",r:"Europe",cc:"fr"},
+  {c:"Gabon",cap:"Libreville",r:"Africa",cc:"ga"},
+  {c:"Gambia",cap:"Banjul",r:"Africa",cc:"gm"},
+  {c:"Georgië",cap:"Tbilisi",r:"Asia",cc:"ge"},
+  {c:"Ghana",cap:"Accra",r:"Africa",cc:"gh"},
+  {c:"Grenada",cap:"Saint George's",r:"Americas",cc:"gd"},
+  {c:"Guatemala",cap:"Guatemala-Stad",r:"Americas",cc:"gt"},
+  {c:"Guinee",cap:"Conakry",r:"Africa",cc:"gn"},
+  {c:"Guinee-Bissau",cap:"Bissau",r:"Africa",cc:"gw"},
+  {c:"Guyana",cap:"Georgetown",r:"Americas",cc:"gy"},
+  {c:"Haïti",cap:"Port-au-Prince",r:"Americas",cc:"ht"},
+  {c:"Honduras",cap:"Tegucigalpa",r:"Americas",cc:"hn"},
+  {c:"Hongarije",cap:"Boedapest",r:"Europe",cc:"hu"},
+  {c:"Ierland",cap:"Dublin",r:"Europe",cc:"ie"},
+  {c:"IJsland",cap:"Reykjavik",r:"Europe",cc:"is"},
+  {c:"India",cap:"New Delhi",r:"Asia",cc:"in"},
+  {c:"Indonesië",cap:"Jakarta",r:"Asia",cc:"id"},
+  {c:"Irak",cap:"Bagdad",r:"Asia",cc:"iq"},
+  {c:"Iran",cap:"Teheran",r:"Asia",cc:"ir"},
+  {c:"Israël",cap:"Jeruzalem",r:"Asia",cc:"il"},
+  {c:"Italië",cap:"Rome",r:"Europe",cc:"it"},
+  {c:"Ivoorkust",cap:"Yamoussoukro",r:"Africa",cc:"ci"},
+  {c:"Jamaica",cap:"Kingston",r:"Americas",cc:"jm"},
+  {c:"Japan",cap:"Tokio",r:"Asia",cc:"jp"},
+  {c:"Jemen",cap:"Sanaa",r:"Asia",cc:"ye"},
+  {c:"Jordanië",cap:"Amman",r:"Asia",cc:"jo"},
+  {c:"Kaapverdië",cap:"Praia",r:"Africa",cc:"cv"},
+  {c:"Kameroen",cap:"Yaoundé",r:"Africa",cc:"cm"},
+  {c:"Kazachstan",cap:"Astana",r:"Asia",cc:"kz"},
+  {c:"Kenia",cap:"Nairobi",r:"Africa",cc:"ke"},
+  {c:"Kiribati",cap:"Tarawa",r:"Oceania",cc:"ki"},
+  {c:"Koeweit",cap:"Koeweit-Stad",r:"Asia",cc:"kw"},
+  {c:"Kroatië",cap:"Zagreb",r:"Europe",cc:"hr"},
+  {c:"Kyrgyzstan",cap:"Bisjkek",r:"Asia",cc:"kg"},
+  {c:"Laos",cap:"Vientiane",r:"Asia",cc:"la"},
+  {c:"Lesotho",cap:"Maseru",r:"Africa",cc:"ls"},
+  {c:"Letland",cap:"Riga",r:"Europe",cc:"lv"},
+  {c:"Libanon",cap:"Beiroet",r:"Asia",cc:"lb"},
+  {c:"Liberia",cap:"Monrovia",r:"Africa",cc:"lr"},
+  {c:"Libië",cap:"Tripoli",r:"Africa",cc:"ly"},
+  {c:"Liechtenstein",cap:"Vaduz",r:"Europe",cc:"li"},
+  {c:"Litouwen",cap:"Vilnius",r:"Europe",cc:"lt"},
+  {c:"Luxemburg",cap:"Luxemburg",r:"Europe",cc:"lu"},
+  {c:"Madagascar",cap:"Antananarivo",r:"Africa",cc:"mg"},
+  {c:"Malawi",cap:"Lilongwe",r:"Africa",cc:"mw"},
+  {c:"Maldiven",cap:"Malé",r:"Asia",cc:"mv"},
+  {c:"Maleisië",cap:"Kuala Lumpur",r:"Asia",cc:"my"},
+  {c:"Mali",cap:"Bamako",r:"Africa",cc:"ml"},
+  {c:"Malta",cap:"Valletta",r:"Europe",cc:"mt"},
+  {c:"Marokko",cap:"Rabat",r:"Africa",cc:"ma"},
+  {c:"Marshalleilanden",cap:"Majuro",r:"Oceania",cc:"mh"},
+  {c:"Mauritanië",cap:"Nouakchott",r:"Africa",cc:"mr"},
+  {c:"Mauritius",cap:"Port Louis",r:"Africa",cc:"mu"},
+  {c:"Mexico",cap:"Mexico-Stad",r:"Americas",cc:"mx"},
+  {c:"Micronesië",cap:"Palikir",r:"Oceania",cc:"fm"},
+  {c:"Moldavië",cap:"Chisinau",r:"Europe",cc:"md"},
+  {c:"Monaco",cap:"Monaco",r:"Europe",cc:"mc"},
+  {c:"Mongolië",cap:"Ulaanbaatar",r:"Asia",cc:"mn"},
+  {c:"Montenegro",cap:"Podgorica",r:"Europe",cc:"me"},
+  {c:"Mozambique",cap:"Maputo",r:"Africa",cc:"mz"},
+  {c:"Myanmar",cap:"Naypyidaw",r:"Asia",cc:"mm"},
+  {c:"Namibië",cap:"Windhoek",r:"Africa",cc:"na"},
+  {c:"Nauru",cap:"Yaren",r:"Oceania",cc:"nr"},
+  {c:"Nepal",cap:"Kathmandu",r:"Asia",cc:"np"},
+  {c:"Nederland",cap:"Amsterdam",r:"Europe",cc:"nl"},
+  {c:"Nicaragua",cap:"Managua",r:"Americas",cc:"ni"},
+  {c:"Niger",cap:"Niamey",r:"Africa",cc:"ne"},
+  {c:"Nigeria",cap:"Abuja",r:"Africa",cc:"ng"},
+  {c:"Noord-Korea",cap:"Pyongyang",r:"Asia",cc:"kp"},
+  {c:"Noord-Macedonië",cap:"Skopje",r:"Europe",cc:"mk"},
+  {c:"Noorwegen",cap:"Oslo",r:"Europe",cc:"no"},
+  {c:"Nieuw-Zeeland",cap:"Wellington",r:"Oceania",cc:"nz"},
+  {c:"Oekraïne",cap:"Kiev",r:"Europe",cc:"ua"},
+  {c:"Oezbekistan",cap:"Tasjkent",r:"Asia",cc:"uz"},
+  {c:"Oman",cap:"Muscat",r:"Asia",cc:"om"},
+  {c:"Oost-Timor",cap:"Dili",r:"Asia",cc:"tl"},
+  {c:"Oostenrijk",cap:"Wenen",r:"Europe",cc:"at"},
+  {c:"Pakistan",cap:"Islamabad",r:"Asia",cc:"pk"},
+  {c:"Palau",cap:"Ngerulmud",r:"Oceania",cc:"pw"},
+  {c:"Panama",cap:"Panama-Stad",r:"Americas",cc:"pa"},
+  {c:"Papoea-Nieuw-Guinea",cap:"Port Moresby",r:"Oceania",cc:"pg"},
+  {c:"Paraguay",cap:"Asunción",r:"Americas",cc:"py"},
+  {c:"Peru",cap:"Lima",r:"Americas",cc:"pe"},
+  {c:"Polen",cap:"Warschau",r:"Europe",cc:"pl"},
+  {c:"Portugal",cap:"Lissabon",r:"Europe",cc:"pt"},
+  {c:"Qatar",cap:"Doha",r:"Asia",cc:"qa"},
+  {c:"Roemenië",cap:"Boekarest",r:"Europe",cc:"ro"},
+  {c:"Rusland",cap:"Moskou",r:"Europe",cc:"ru"},
+  {c:"Rwanda",cap:"Kigali",r:"Africa",cc:"rw"},
+  {c:"Saint Kitts en Nevis",cap:"Basseterre",r:"Americas",cc:"kn"},
+  {c:"Saint Lucia",cap:"Castries",r:"Americas",cc:"lc"},
+  {c:"Saint Vincent en de Grenadines",cap:"Kingstown",r:"Americas",cc:"vc"},
+  {c:"Salomonseilanden",cap:"Honiara",r:"Oceania",cc:"sb"},
+  {c:"Samoa",cap:"Apia",r:"Oceania",cc:"ws"},
+  {c:"San Marino",cap:"San Marino",r:"Europe",cc:"sm"},
+  {c:"Sao Tomé en Príncipe",cap:"São Tomé",r:"Africa",cc:"st"},
+  {c:"Saudi-Arabië",cap:"Riyad",r:"Asia",cc:"sa"},
+  {c:"Senegal",cap:"Dakar",r:"Africa",cc:"sn"},
+  {c:"Servië",cap:"Belgrado",r:"Europe",cc:"rs"},
+  {c:"Seychellen",cap:"Victoria",r:"Africa",cc:"sc"},
+  {c:"Sierra Leone",cap:"Freetown",r:"Africa",cc:"sl"},
+  {c:"Singapore",cap:"Singapore",r:"Asia",cc:"sg"},
+  {c:"Slovenië",cap:"Ljubljana",r:"Europe",cc:"si"},
+  {c:"Slowakije",cap:"Bratislava",r:"Europe",cc:"sk"},
+  {c:"Somalië",cap:"Mogadishu",r:"Africa",cc:"so"},
+  {c:"Spanje",cap:"Madrid",r:"Europe",cc:"es"},
+  {c:"Sri Lanka",cap:"Sri Jayawardenepura Kotte",r:"Asia",cc:"lk"},
+  {c:"Soedan",cap:"Khartoem",r:"Africa",cc:"sd"},
+  {c:"Suriname",cap:"Paramaribo",r:"Americas",cc:"sr"},
+  {c:"Syrië",cap:"Damascus",r:"Asia",cc:"sy"},
+  {c:"Tadzjikistan",cap:"Doesjanbe",r:"Asia",cc:"tj"},
+  {c:"Tanzania",cap:"Dodoma",r:"Africa",cc:"tz"},
+  {c:"Thailand",cap:"Bangkok",r:"Asia",cc:"th"},
+  {c:"Togo",cap:"Lomé",r:"Africa",cc:"tg"},
+  {c:"Tonga",cap:"Nuku'alofa",r:"Oceania",cc:"to"},
+  {c:"Trinidad en Tobago",cap:"Port of Spain",r:"Americas",cc:"tt"},
+  {c:"Tsjaad",cap:"N'Djamena",r:"Africa",cc:"td"},
+  {c:"Tsjechië",cap:"Praag",r:"Europe",cc:"cz"},
+  {c:"Tunesië",cap:"Tunis",r:"Africa",cc:"tn"},
+  {c:"Turkije",cap:"Ankara",r:"Asia",cc:"tr"},
+  {c:"Turkmenistan",cap:"Asjchabad",r:"Asia",cc:"tm"},
+  {c:"Tuvalu",cap:"Funafuti",r:"Oceania",cc:"tv"},
+  {c:"Uganda",cap:"Kampala",r:"Africa",cc:"ug"},
+  {c:"Uruguay",cap:"Montevideo",r:"Americas",cc:"uy"},
+  {c:"Vanuatu",cap:"Port Vila",r:"Oceania",cc:"vu"},
+  {c:"Venezuela",cap:"Caracas",r:"Americas",cc:"ve"},
+  {c:"Verenigd Koninkrijk",cap:"Londen",r:"Europe",cc:"gb"},
+  {c:"Verenigde Arabische Emiraten",cap:"Abu Dhabi",r:"Asia",cc:"ae"},
+  {c:"Verenigde Staten",cap:"Washington D.C.",r:"Americas",cc:"us"},
+  {c:"Vietnam",cap:"Hanoi",r:"Asia",cc:"vn"},
+  {c:"Wit-Rusland",cap:"Minsk",r:"Europe",cc:"by"},
+  {c:"Zambia",cap:"Lusaka",r:"Africa",cc:"zm"},
+  {c:"Zimbabwe",cap:"Harare",r:"Africa",cc:"zw"},
+  {c:"Zuid-Afrika",cap:"Pretoria",r:"Africa",cc:"za"},
+  {c:"Zuid-Korea",cap:"Seoul",r:"Asia",cc:"kr"},
+  {c:"Zuid-Soedan",cap:"Juba",r:"Africa",cc:"ss"},
+  {c:"Zweden",cap:"Stockholm",r:"Europe",cc:"se"},
+  {c:"Zwitserland",cap:"Bern",r:"Europe",cc:"ch"},
 ];
 
-const EN_NAMES = {
-  "Albanië":"Albania","Algerije":"Algeria","Argentinië":"Argentina","Armenië":"Armenia",
-  "Australië":"Australia","Azerbeidzjan":"Azerbaijan","Bahama's":"Bahamas","Bahrein":"Bahrain",
-  "België":"Belgium","Bolivië":"Bolivia","Bolivia":"Bolivia","Bosnië-Herzegovina":"Bosnia and Herzegovina",
-  "Brazilië":"Brazil","Bulgarije":"Bulgaria","Cambodja":"Cambodia","Centraal-Afrikaanse Republiek":"Central African Republic",
-  "Chili":"Chile","China":"China","Colombia":"Colombia","Comoren":"Comoros","Congo":"Republic of the Congo",
-  "Costa Rica":"Costa Rica","Cuba":"Cuba","Cyprus":"Cyprus","Denemarken":"Denmark","Djibouti":"Djibouti",
-  "Dominica":"Dominica","Dominicaanse Republiek":"Dominican Republic","DR Congo":"Democratic Republic of the Congo",
-  "Duitsland":"Germany","Ecuador":"Ecuador","Egypte":"Egypt","El Salvador":"El Salvador",
-  "Equatoriaal-Guinea":"Equatorial Guinea","Eritrea":"Eritrea","Estland":"Estonia","Eswatini":"Eswatini",
-  "Ethiopië":"Ethiopia","Fiji":"Fiji","Filipijnen":"Philippines","Finland":"Finland","Frankrijk":"France",
-  "Gabon":"Gabon","Gambia":"Gambia","Georgië":"Georgia","Ghana":"Ghana","Grenada":"Grenada",
-  "Guatemala":"Guatemala","Guinee":"Guinea","Guinee-Bissau":"Guinea-Bissau","Guyana":"Guyana",
-  "Haïti":"Haiti","Honduras":"Honduras","Hongarije":"Hungary","Ierland":"Ireland","IJsland":"Iceland",
-  "India":"India","Indonesië":"Indonesia","Irak":"Iraq","Iran":"Iran","Israël":"Israel","Italië":"Italy",
-  "Ivoorkust":"Ivory Coast","Jamaica":"Jamaica","Japan":"Japan","Jemen":"Yemen","Jordanië":"Jordan",
-  "Kaapverdië":"Cape Verde","Kameroen":"Cameroon","Kazachstan":"Kazakhstan","Kenia":"Kenya",
-  "Kiribati":"Kiribati","Koeweit":"Kuwait","Kroatië":"Croatia","Kyrgyzstan":"Kyrgyzstan","Laos":"Laos",
-  "Lesotho":"Lesotho","Letland":"Latvia","Libanon":"Lebanon","Liberia":"Liberia","Libië":"Libya",
-  "Liechtenstein":"Liechtenstein","Litouwen":"Lithuania","Luxemburg":"Luxembourg","Madagascar":"Madagascar",
-  "Malawi":"Malawi","Maldiven":"Maldives","Maleisië":"Malaysia","Mali":"Mali","Malta":"Malta",
-  "Marokko":"Morocco","Marshalleilanden":"Marshall Islands","Mauritanië":"Mauritania","Mauritius":"Mauritius",
-  "Mexico":"Mexico","Micronesië":"Micronesia","Moldavië":"Moldova","Monaco":"Monaco","Mongolië":"Mongolia",
-  "Montenegro":"Montenegro","Mozambique":"Mozambique","Myanmar":"Myanmar","Namibië":"Namibia",
-  "Nauru":"Nauru","Nepal":"Nepal","Nederland":"Netherlands","Nicaragua":"Nicaragua","Niger":"Niger",
-  "Nigeria":"Nigeria","Noord-Korea":"North Korea","Noord-Macedonië":"North Macedonia","Noorwegen":"Norway",
-  "Nieuw-Zeeland":"New Zealand","Oekraïne":"Ukraine","Oezbekistan":"Uzbekistan","Oman":"Oman",
-  "Oost-Timor":"East Timor","Oostenrijk":"Austria","Pakistan":"Pakistan","Palau":"Palau","Panama":"Panama",
-  "Papoea-Nieuw-Guinea":"Papua New Guinea","Paraguay":"Paraguay","Peru":"Peru","Polen":"Poland",
-  "Portugal":"Portugal","Qatar":"Qatar","Roemenië":"Romania","Rusland":"Russia","Rwanda":"Rwanda",
-  "Saint Kitts en Nevis":"Saint Kitts and Nevis","Saint Lucia":"Saint Lucia",
-  "Saint Vincent en de Grenadines":"Saint Vincent and the Grenadines","Salomonseilanden":"Solomon Islands",
-  "Samoa":"Samoa","San Marino":"San Marino","Sao Tomé en Príncipe":"Sao Tome and Principe",
-  "Saudi-Arabië":"Saudi Arabia","Senegal":"Senegal","Servië":"Serbia","Seychellen":"Seychelles",
-  "Sierra Leone":"Sierra Leone","Singapore":"Singapore","Slovenië":"Slovenia","Slowakije":"Slovakia",
-  "Somalië":"Somalia","Spanje":"Spain","Sri Lanka":"Sri Lanka","Soedan":"Sudan","Suriname":"Suriname",
-  "Syrië":"Syria","Tadzjikistan":"Tajikistan","Tanzania":"Tanzania","Thailand":"Thailand","Togo":"Togo",
-  "Tonga":"Tonga","Trinidad en Tobago":"Trinidad and Tobago","Tsjaad":"Chad","Tsjechië":"Czech Republic",
-  "Tunesië":"Tunisia","Turkije":"Turkey","Turkmenistan":"Turkmenistan","Tuvalu":"Tuvalu","Uganda":"Uganda",
-  "Uruguay":"Uruguay","Vanuatu":"Vanuatu","Venezuela":"Venezuela","Verenigd Koninkrijk":"United Kingdom",
-  "Verenigde Arabische Emiraten":"United Arab Emirates","Verenigde Staten":"United States","Vietnam":"Vietnam",
-  "Wit-Rusland":"Belarus","Zambia":"Zambia","Zimbabwe":"Zimbabwe","Zuid-Afrika":"South Africa",
-  "Zuid-Korea":"South Korea","Zuid-Soedan":"South Sudan","Zweden":"Sweden","Zwitserland":"Switzerland",
-  "Afghanistan":"Afghanistan","Antigua en Barbuda":"Antigua and Barbuda","Andorra":"Andorra",
-  "Angola":"Angola","Bangladesh":"Bangladesh","Barbados":"Barbados","Belize":"Belize","Benin":"Benin",
-  "Bhutan":"Bhutan","Botswana":"Botswana","Brunei":"Brunei","Burkina Faso":"Burkina Faso","Burundi":"Burundi",
+// Alternative accepted answers
+const ALT_ANSWERS = {
+  "Kabul": ["kaboel"],
+  "Jerevan": ["yerevan","erevan"],
+  "Bakoe": ["baku"],
+  "Brussel": ["brussels","bruxelles"],
+  "Peking": ["beijing"],
+  "Kopenhagen": ["copenhagen","kobenhavn"],
+  "Caïro": ["cairo","kairo"],
+  "Boedapest": ["budapest"],
+  "Reykjavik": ["reykjavík"],
+  "Bagdad": ["baghdad"],
+  "Teheran": ["tehran"],
+  "Jeruzalem": ["jerusalem"],
+  "Tokio": ["tokyo"],
+  "Koeweit-Stad": ["koeweit","kuwait","kuwait city","koeweit stad"],
+  "Beiroet": ["beirut","beyrouth"],
+  "Lissabon": ["lisbon","lisboa"],
+  "Boekarest": ["bucharest","bucuresti"],
+  "Moskou": ["moscow","moskva"],
+  "Belgrado": ["belgrade","beograd"],
+  "Bratislava": ["bratislava"],
+  "Madrid": ["madrid"],
+  "Bangkok": ["bangkok","krung thep"],
+  "Praag": ["prague","praha"],
+  "Warschau": ["warsaw","warszawa"],
+  "Wenen": ["vienna","wien"],
+  "Kiev": ["kyiv"],
+  "Tasjkent": ["tashkent"],
+  "Londen": ["london"],
+  "Parijs": ["paris"],
+  "Berlijn": ["berlin"],
+  "Rome": ["roma"],
+  "Riyad": ["riyadh"],
+  "Khartoem": ["khartoum"],
+  "Damascus": ["damaskus"],
+  "Doesjanbe": ["dushanbe"],
+  "Asjchabad": ["ashgabat","ashkhabad"],
+  "Bisjkek": ["bishkek"],
+  "Guatemala-Stad": ["guatemala stad","guatemala city","guatemala"],
+  "Mexico-Stad": ["mexico stad","mexico city","mexico"],
+  "Panama-Stad": ["panama stad","panama city","panama"],
+  "Washington D.C.": ["washington","washington dc","washington d.c"],
+  "Abu Dhabi": ["abu dhabi"],
+  "Hanoi": ["ha noi"],
+  "Sri Jayawardenepura Kotte": ["kotte","sri jayawardenepura"],
+  "Nuku'alofa": ["nukualofa","nuku alofa"],
+  "N'Djamena": ["ndjamena","n djamena"],
+  "São Tomé": ["sao tome"],
+  "Addis Abeba": ["addis ababa"],
+  "Phnom Penh": ["pnom penh"],
+  "Manilla": ["manila"],
+  "Havana": ["la habana"],
+  "Ulaanbaatar": ["ulan bator","ulaanbataar"],
+  "Buenos Aires": ["buenos aires"],
+  "Oslo": ["oslo"],
+  "Stockholm": ["stockholm"],
+  "Helsinki": ["helsingfors"],
+  "Ljubljana": ["ljubljana"],
 };
 
-let queue=[], idx=0, score=0, missed=[], selectedRegion="all", feedbackTimeout=null, nextImg=null;
+let queue=[], idx=0, score=0, missed=[], selectedRegion="all", feedbackTimeout=null;
+let wrongQueue=[]; // wrong answers to re-insert after 3 questions
+let wrongSchedule=[]; // {item, insertAfterIdx}
+let totalQuestions=0;
+let answeredCount=0;
+let isReviewRound=false;
+let finalMissed=[]; // permanently wrong (never got right)
 
 function normalize(s){
-  return s.trim().toLowerCase().normalize("NFD").replace(/[\u0300-\u036f]/g,"").replace(/[.\-\s]+/g," ").trim();
+  return s.trim().toLowerCase().normalize("NFD").replace(/[\u0300-\u036f]/g,"").replace(/[.\-''`\s]+/g," ").trim();
 }
 function shuffle(a){for(let i=a.length-1;i>0;i--){const j=Math.floor(Math.random()*(i+1));[a[i],a[j]]=[a[j],a[i]];}return a;}
 
-function getImgUrl(country){
-  const en = EN_NAMES[country] || country;
-  return `https://source.unsplash.com/800x400/?${encodeURIComponent(en + " landscape")}`;
+function getFlagUrl(cc){
+  return `https://flagcdn.com/w80/${cc}.png`;
 }
 
-function preloadNext(){
-  if(idx+1 < queue.length){
-    nextImg = new Image();
-    nextImg.src = getImgUrl(queue[idx+1].c);
+// Convert country code to flag emoji
+function ccToFlagEmoji(cc){
+  const upper = cc.toUpperCase();
+  return String.fromCodePoint(...[...upper].map(c => 0x1F1E6 - 65 + c.charCodeAt(0)));
+}
+
+const REGION_COLORS = {
+  "Europe": "#2a3f5f",
+  "Asia": "#3d2f1e",
+  "Americas": "#1e3a2a",
+  "Africa": "#3f2a1e",
+  "Oceania": "#1e2f3f",
+};
+const REGION_NL = {
+  "Europe": "Europa",
+  "Asia": "Azië",
+  "Americas": "Amerika",
+  "Africa": "Afrika",
+  "Oceania": "Oceanië",
+};
+
+function checkAnswerMatch(input, correctCap){
+  const norm = normalize(input);
+  const normCorrect = normalize(correctCap);
+  if(norm === normCorrect) return true;
+  // Check alternatives
+  const alts = ALT_ANSWERS[correctCap];
+  if(alts){
+    for(const alt of alts){
+      if(norm === normalize(alt)) return true;
+    }
   }
+  return false;
 }
 
 function startGame(){
   const src = selectedRegion==="all" ? ALL_COUNTRIES : ALL_COUNTRIES.filter(x=>x.r===selectedRegion);
-  queue=shuffle([...src]); idx=0; score=0; missed=[];
+  queue=shuffle([...src]);
+  idx=0; score=0; missed=[]; wrongQueue=[]; wrongSchedule=[]; answeredCount=0;
+  totalQuestions=queue.length;
+  isReviewRound=false;
+  finalMissed=[];
   document.getElementById("start-screen").style.display="none";
   document.getElementById("end-screen").style.display="none";
   document.getElementById("game-screen").style.display="block";
+  document.getElementById("review-banner").style.display="none";
   showQuestion();
 }
 
+function startReviewRound(){
+  // Take all finalMissed and do one more round
+  if(finalMissed.length===0){ endGame(); return; }
+  isReviewRound=true;
+  queue=shuffle([...finalMissed]);
+  idx=0; wrongQueue=[]; wrongSchedule=[];
+  totalQuestions=queue.length;
+  answeredCount=0;
+  finalMissed=[];
+  document.getElementById("review-banner").style.display="block";
+  showQuestion();
+}
+
+function insertWrongBack(){
+  // Check if any wrong items are scheduled to be reinserted
+  const toInsert=[];
+  wrongSchedule = wrongSchedule.filter(ws=>{
+    if(answeredCount >= ws.insertAfterCount){
+      toInsert.push(ws.item);
+      return false;
+    }
+    return true;
+  });
+  // Insert them at current position (or right after current)
+  for(const item of toInsert){
+    // Insert at a random position from idx+1 to idx+3 (or end)
+    const pos = Math.min(idx + 1 + Math.floor(Math.random()*2), queue.length);
+    queue.splice(pos, 0, item);
+  }
+}
+
 function showQuestion(){
-  if(idx>=queue.length){endGame();return;}
+  insertWrongBack();
+  if(idx>=queue.length){
+    if(!isReviewRound){
+      // Start review round with permanently missed
+      startReviewRound();
+    } else {
+      // Add remaining finalMissed from review round
+      endGame();
+    }
+    return;
+  }
   const q=queue[idx];
   document.getElementById("country-name").textContent=q.c;
   document.getElementById("answer-input").value="";
   document.getElementById("feedback").textContent="";
   document.getElementById("feedback").className="";
-  document.getElementById("progress-bar").style.width=(idx/queue.length*100)+"%";
+  const pct = totalQuestions>0 ? (answeredCount/totalQuestions*100) : 0;
+  document.getElementById("progress-bar").style.width=pct+"%";
   document.getElementById("score-text").textContent="Score: "+score;
-  document.getElementById("progress-text").textContent=(idx+1)+" / "+queue.length;
-  const img=document.getElementById("country-img");
-  img.src=getImgUrl(q.c);
-  img.alt=q.c;
-  document.getElementById("img-credit").textContent="Foto via Unsplash";
+  document.getElementById("progress-text").textContent=(answeredCount+1)+" / "+totalQuestions;
+
+  // Retry badge
+  const retryBadge = document.getElementById("retry-badge");
+  if(q._retry){
+    retryBadge.style.display="block";
+    retryBadge.textContent="↺ Herhaling" + (q._retryCount > 1 ? " ("+q._retryCount+"×)" : "");
+  } else {
+    retryBadge.style.display="none";
+  }
+
+  // Country visual — flag emoji + background color per region
+  const wrap = document.getElementById("country-img-wrap");
+  wrap.style.background = REGION_COLORS[q.r] || "var(--dr-navy)";
+  document.getElementById("country-flag-emoji").textContent = ccToFlagEmoji(q.cc);
+  document.getElementById("country-region-label").textContent = REGION_NL[q.r] || q.r;
+
+  // Small flag image
+  const flagImg = document.getElementById("country-flag-img");
+  flagImg.src = getFlagUrl(q.cc);
+  flagImg.onerror = () => { flagImg.style.display = "none"; };
+  flagImg.onload = () => { flagImg.style.display = "block"; };
+
   document.getElementById("answer-input").focus();
-  preloadNext();
 }
 
 function checkAnswer(){
@@ -379,38 +852,71 @@ function checkAnswer(){
   const q=queue[idx];
   const val=document.getElementById("answer-input").value;
   if(!val.trim()) return;
-  const correct=normalize(val)===normalize(q.cap);
+  const correct=checkAnswerMatch(val, q.cap);
   const fb=document.getElementById("feedback");
-  if(correct){score++;fb.textContent="Goed! "+q.cap;fb.className="feedback-correct";}
-  else{missed.push(q);fb.textContent="Fout — het was: "+q.cap;fb.className="feedback-wrong";}
+  if(correct){
+    score++;
+    fb.textContent="✓ Goed! "+q.cap;
+    fb.className="feedback-correct";
+  } else {
+    fb.textContent="✗ Fout — het was: "+q.cap;
+    fb.className="feedback-wrong";
+    // Schedule wrong answer to come back after 3 more questions
+    const retryItem = {...q, _retry:true, _retryCount:(q._retryCount||0)+1};
+    wrongSchedule.push({item:retryItem, insertAfterCount: answeredCount+3});
+    if(!q._retry){
+      missed.push(q); // only add to missed list on first wrong
+    }
+    finalMissed.push(q); // track for final review
+  }
+  answeredCount++;
   idx++;
   if(feedbackTimeout) clearTimeout(feedbackTimeout);
-  feedbackTimeout=setTimeout(showQuestion,1100);
+  feedbackTimeout=setTimeout(showQuestion,1200);
 }
 
 function skipQuestion(){
   if(idx>=queue.length) return;
-  missed.push(queue[idx]);
+  const q=queue[idx];
   const fb=document.getElementById("feedback");
-  fb.textContent="Het was: "+queue[idx].cap;fb.className="feedback-wrong";
+  fb.textContent="Het was: "+q.cap;
+  fb.className="feedback-wrong";
+  // Schedule to come back
+  const retryItem = {...q, _retry:true, _retryCount:(q._retryCount||0)+1};
+  wrongSchedule.push({item:retryItem, insertAfterCount: answeredCount+3});
+  if(!q._retry){
+    missed.push(q);
+  }
+  finalMissed.push(q);
+  answeredCount++;
   idx++;
   if(feedbackTimeout) clearTimeout(feedbackTimeout);
-  feedbackTimeout=setTimeout(showQuestion,1100);
+  feedbackTimeout=setTimeout(showQuestion,1200);
 }
 
 function endGame(){
   document.getElementById("game-screen").style.display="none";
   document.getElementById("end-screen").style.display="block";
-  const total=queue.length;
-  document.getElementById("end-score").textContent=score+"/"+total;
-  const pct=Math.round(score/total*100);
+  // Deduplicate missed for display
+  const uniqueMissed = [];
+  const seen = new Set();
+  for(const m of missed){
+    if(!seen.has(m.c)){
+      seen.add(m.c);
+      uniqueMissed.push(m);
+    }
+  }
+  const total = selectedRegion==="all" ? ALL_COUNTRIES.length : ALL_COUNTRIES.filter(x=>x.r===selectedRegion).length;
+  const correctCount = total - uniqueMissed.length;
+  document.getElementById("end-score").textContent=correctCount+"/"+total;
+  const pct=Math.round(correctCount/total*100);
   let emoji=pct>=90?"Uitstekend!":pct>=70?"Goed gedaan!":pct>=50?"Aardig bezig!":"Blijf oefenen!";
   document.getElementById("end-label").textContent=emoji+" Je had "+pct+"% goed.";
   const ml=document.getElementById("missed-list");
-  ml.innerHTML=missed.length?"<h3>Gemiste hoofdsteden ("+missed.length+")</h3>":"<h3>Alle goed!</h3>";
-  missed.forEach(m=>{
+  ml.innerHTML=uniqueMissed.length?'<h3>Gemiste hoofdsteden ('+uniqueMissed.length+')</h3>':'<h3>Alle goed! Perfecte score!</h3>';
+  uniqueMissed.forEach(m=>{
     const d=document.createElement("div");d.className="missed-item";
-    d.innerHTML='<span class="missed-country">'+m.c+'</span><span>'+m.cap+'</span>';
+    d.innerHTML='<span class="missed-country">'+m.c+'</span><span class="missed-capital">'+m.cap+'</span>';
     ml.appendChild(d);
   });
 }
